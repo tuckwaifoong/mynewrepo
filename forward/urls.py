@@ -1,7 +1,7 @@
 """forward URL Configuration
 
 The `urlpatterns` list routes URLs to views. For more information please see:
-    https://docs.djangoproject.com/en/3.2/topics/http/urls/
+    https://docs.djangoproject.com/en/3.1/topics/http/urls/
 Examples:
 Function views
     1. Add an import:  from my_app import views
@@ -15,7 +15,21 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
+from django.conf.urls import url,include
+from hello_world import views
+from forward.settings import DEBUG, STATIC_URL, STATIC_DIR, MEDIA_URL,MEDIA_ROOT
+from django.conf.urls.static import static
+
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    url(r'^$',views.index,name='index'),
+    #url(r'^special/',views.special,name='special'),
+    url(r'^book/',include('book.urls')),
+    url(r'^hello_world/',include('hello_world.urls')),
+    #url(r'^combine/',include('combine.urls')),
+    url(r'^logout/$',views.user_logout, name='logout')
 ]
+
+if DEBUG:
+    urlpatterns += static(MEDIA_URL, document_root = MEDIA_ROOT)
